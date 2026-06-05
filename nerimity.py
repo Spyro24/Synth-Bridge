@@ -52,4 +52,8 @@ class Bridge:
     
     def sendMessage(self, mesagePack):
         if mesagePack["emiter"] != self.name:
-            requests.post(f"https://nerimity.com/api/channels/{self.channels[mesagePack['channel']]}/messages", headers={"Authorization": self.botToken}, data={"content": mesagePack["content"]})
+            msg = {"content": mesagePack["content"]}
+            if "userData" in mesagePack:
+                msg["username_override"] = mesagePack["userData"]["userName"]
+                msg["avatar_url_override"] = mesagePack["userData"]["avatar"]
+            requests.post(f"https://nerimity.com/api/channels/{self.channels[mesagePack['channel']]}/messages", headers={"Authorization": self.botToken}, data=msg)

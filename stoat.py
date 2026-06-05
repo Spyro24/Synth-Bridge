@@ -27,6 +27,7 @@ class stoatBridge:
                         packet = json.loads(packet)
                         if packet["type"] == "Message" and "content" in packet:
                             try:
+                                userData = {"userName": packet['user']['username'], "avatar": f"https://cdn.stoatusercontent.com/avatars/{packet['user']['avatar']['_id']}"}
                                 messagePack = {"content": packet["content"], "emiter": self.name, "channel": self.channels.index(packet["channel"])}
                                 for platform in self.platforms:
                                     platform.messageStack.append(messagePack)
