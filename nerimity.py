@@ -31,11 +31,14 @@ class Bridge:
                         else:
                             try:
                                 data = json.loads(package[2:])
+                                print(data)
                                 if "message:created" in data:
                                     msgData = data[1]
                                     try:
                                         if msgData["message"]["createdById"] != self.botID:
-                                            messagePack = {"content": msgData["message"]['content'], "emiter": self.name, "channel": self.channels.index(msgData["message"]['channelId'])}
+                                            creatorData = msgData["message"]["createdBy"]
+                                            userData = {"userName": creatorData["username"], "avatar": "https://cdn.nerimity.com/" + creatorData["avatar"]}
+                                            messagePack = {"content": msgData["message"]['content'], "emiter": self.name, "channel": self.channels.index(msgData["message"]['channelId']), "userData": userData}
                                             for platform in self.platforms:
                                                 platform.messageStack.append(messagePack)
                                     except ValueError: pass

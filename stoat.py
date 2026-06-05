@@ -42,4 +42,8 @@ class stoatBridge:
     
     def sendMessage(self, mesagePack):
         if mesagePack["emiter"] != self.name:
-            requests.post(f"https://stoat.chat/api/channels/{self.channels[mesagePack['channel']]}/messages?", headers={"X-Bot-Token": self.botToken}, json={"content": mesagePack["content"]})
+            sendJson = {"content": mesagePack["content"]}
+            if "userData" in mesagePack:
+                masqData = {"name": mesagePack["userData"]["userName"], "avatar": mesagePack["userData"]["avatar"]}
+                sendJson["masquerade"] = masqData
+            requests.post(f"https://stoat.chat/api/channels/{self.channels[mesagePack['channel']]}/messages?", headers={"X-Bot-Token": self.botToken}, json=sendJson)
